@@ -1,12 +1,34 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { HiBell, HiChat, HiSearch } from "react-icons/hi";
 import { useSession, signIn, signOut } from "next-auth/react";
+import app from "./../shared/firebaseConfig";
+import { FirebaseApp } from "firebase/app";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const Header = () => {
   const { data: session } = useSession();
-  console.log(session);
+  const db = getFirestore(app);
+
+  useEffect(() => {
+    saveUserInfo();
+  }, [session]);
+
+  const saveUserInfo = async () => {
+    if (session?.user) {
+      try {
+        await setDoc(doc(db, "user", session.user.email), {
+          userName: session.user.name,
+          email: session.user.email,
+          userimage: session.user.image,
+        });
+      } catch (error) {
+        console.error("Error saving user info:", error);
+      }
+    }
+  };
+
   return (
     <div className="flex gap-3 md:gap-2 items-center p-6 ">
       <Image
@@ -55,3 +77,6 @@ const Header = () => {
 };
 
 export default Header;
+function getfirestore(app: FirebaseApp) {
+  throw new Error("Function not implemented.");
+}
