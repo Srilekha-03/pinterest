@@ -6,9 +6,11 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import app from "./../shared/firebaseConfig";
 import { FirebaseApp } from "firebase/app";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const db = getFirestore(app);
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const Header = () => {
       {session?.user ? (
         <Image
           src={session.user.image}
+          onClick={() => router.push("/" + session.user?.email)}
           alt="user-image"
           width={50}
           height={50}
