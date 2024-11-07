@@ -1,8 +1,12 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { HiBell, HiChat, HiSearch } from "react-icons/hi";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Header = () => {
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <div className="flex gap-3 md:gap-2 items-center p-6 ">
       <Image
@@ -30,13 +34,22 @@ const Header = () => {
       />
       <HiBell className="text-[40px] text-gray-500" />
       <HiChat className="text-[40px] text-gray-500" />
-      <Image
-        src="/man.png"
-        alt="logo"
-        width={50}
-        height={50}
-        className="hover:bg-gray-300 p-2 cursor-pointer rounded-full"
-      />
+      {session?.user ? (
+        <Image
+          src={session.user.image}
+          alt="user-image"
+          width={50}
+          height={50}
+          className="hover:bg-gray-300 transition-shadow p-2 cursor-pointer rounded-full"
+        />
+      ) : (
+        <button
+          className="p-2 px-5 rounded-full font-semibold"
+          onClick={() => signIn()}
+        >
+          Login
+        </button>
+      )}
     </div>
   );
 };
