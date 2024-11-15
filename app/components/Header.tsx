@@ -43,7 +43,12 @@ const Header = () => {
       <button className="bg-black text-white p-2 px-5 rounded-full">
         Home
       </button>
-      <button className="p-2 px-5 rounded-full font-semibold">Create</button>
+      <button
+        className="p-2 px-5 rounded-full font-semibold"
+        onClick={() => router.push("/pin-builder")}
+      >
+        Create
+      </button>
       <div className="bg-[#e9e9e9] p-3 gap-3 items-center rounded-full w-full hidden md:flex">
         <HiSearch className="text-[25px] text-gray-500" />
         <input
